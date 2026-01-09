@@ -30,6 +30,11 @@ export function Footer() {
                   Team
                 </Link>
               </li>
+              <li>
+                <Link href="/contact" className="text-muted-foreground hover:text-primary">
+                  Contact
+                </Link>
+              </li>
             </ul>
           </div>
         </div>

@@ -13,6 +13,7 @@ const navItems = [
   { href: "/technology", label: "Technology" },
   { href: "/business", label: "Competition & Pricing" },
   { href: "/team", label: "Team" },
+  { href: "/contact", label: "Contact" },
 ];
 
 export function Navbar() {
