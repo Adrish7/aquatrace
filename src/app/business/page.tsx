@@ -47,15 +47,15 @@ export default function BusinessPage() {
               <CardHeader>
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-4">
-                    <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-red-100 dark:bg-red-950 flex items-center justify-center">
-                      <X className="h-6 w-6 text-red-600 dark:text-red-400" />
+                    <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-red-950 flex items-center justify-center">
+                      <X className="h-6 w-6 text-red-400" />
                     </div>
                     <div>
                       <CardTitle className="text-2xl">External Fixed Sensors</CardTitle>
                       <CardDescription>Pressure, acoustic, and sensor monitoring systems</CardDescription>
                     </div>
                   </div>
-                  <span className="px-3 py-1 rounded-full bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300 text-sm font-medium">
+                  <span className="px-3 py-1 rounded-full bg-red-950 text-red-300 text-sm font-medium">
                     Monitor Only
                   </span>
                 </div>
@@ -66,11 +66,11 @@ export default function BusinessPage() {
                     <h4 className="font-semibold text-sm mb-2 text-muted-foreground">Capabilities</h4>
                     <ul className="space-y-1 text-sm text-muted-foreground">
                       <li className="flex items-center gap-2">
-                        <CheckCircle2 className="h-4 w-4 text-green-600" />
+                        <CheckCircle2 className="h-4 w-4 text-green-400" />
                         Continuous monitoring
                       </li>
                       <li className="flex items-center gap-2">
-                        <CheckCircle2 className="h-4 w-4 text-green-600" />
+                        <CheckCircle2 className="h-4 w-4 text-green-400" />
                         Indirect signal detection
                       </li>
                     </ul>
@@ -101,15 +101,15 @@ export default function BusinessPage() {
               <CardHeader>
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-4">
-                    <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-orange-100 dark:bg-orange-950 flex items-center justify-center">
-                      <X className="h-6 w-6 text-orange-600 dark:text-orange-400" />
+                    <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-orange-950 flex items-center justify-center">
+                      <X className="h-6 w-6 text-orange-400" />
                     </div>
                     <div>
                       <CardTitle className="text-2xl">Inline Inspection Tools (PIGs)</CardTitle>
                       <CardDescription>Pipeline inspection gauges and inline inspection devices</CardDescription>
                     </div>
                   </div>
-                  <span className="px-3 py-1 rounded-full bg-orange-100 dark:bg-orange-950 text-orange-700 dark:text-orange-300 text-sm font-medium">
+                  <span className="px-3 py-1 rounded-full bg-orange-950 text-orange-300 text-sm font-medium">
                     Inspection Only
                   </span>
                 </div>
@@ -120,11 +120,11 @@ export default function BusinessPage() {
                     <h4 className="font-semibold text-sm mb-2 text-muted-foreground">Capabilities</h4>
                     <ul className="space-y-1 text-sm text-muted-foreground">
                       <li className="flex items-center gap-2">
-                        <CheckCircle2 className="h-4 w-4 text-green-600" />
+                        <CheckCircle2 className="h-4 w-4 text-green-400" />
                         Detailed inspection data
                       </li>
                       <li className="flex items-center gap-2">
-                        <CheckCircle2 className="h-4 w-4 text-green-600" />
+                        <CheckCircle2 className="h-4 w-4 text-green-400" />
                         Internal pipeline access
                       </li>
                     </ul>
@@ -159,15 +159,15 @@ export default function BusinessPage() {
               <CardHeader>
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-4">
-                    <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-yellow-100 dark:bg-yellow-950 flex items-center justify-center">
-                      <X className="h-6 w-6 text-yellow-600 dark:text-yellow-400" />
+                    <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-yellow-950 flex items-center justify-center">
+                      <X className="h-6 w-6 text-yellow-400" />
                     </div>
                     <div>
                       <CardTitle className="text-2xl">Trenchless Rehabilitation (CIPP)</CardTitle>
                       <CardDescription>Cured-in-place pipe lining and trenchless repair methods</CardDescription>
                     </div>
                   </div>
-                  <span className="px-3 py-1 rounded-full bg-yellow-100 dark:bg-yellow-950 text-yellow-700 dark:text-yellow-300 text-sm font-medium">
+                  <span className="px-3 py-1 rounded-full bg-yellow-950 text-yellow-300 text-sm font-medium">
                     Reactive Only
                   </span>
                 </div>
@@ -178,11 +178,11 @@ export default function BusinessPage() {
                     <h4 className="font-semibold text-sm mb-2 text-muted-foreground">Capabilities</h4>
                     <ul className="space-y-1 text-sm text-muted-foreground">
                       <li className="flex items-center gap-2">
-                        <CheckCircle2 className="h-4 w-4 text-green-600" />
+                        <CheckCircle2 className="h-4 w-4 text-green-400" />
                         Minimal excavation required
                       </li>
                       <li className="flex items-center gap-2">
-                        <CheckCircle2 className="h-4 w-4 text-green-600" />
+                        <CheckCircle2 className="h-4 w-4 text-green-400" />
                         Can address severe damage
                       </li>
                     </ul>
@@ -217,15 +217,15 @@ export default function BusinessPage() {
               <CardHeader>
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-4">
-                    <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
-                      <X className="h-6 w-6 text-gray-600 dark:text-gray-400" />
+                    <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-gray-800 flex items-center justify-center">
+                      <X className="h-6 w-6 text-gray-400" />
                     </div>
                     <div>
                       <CardTitle className="text-2xl">Manual Excavation</CardTitle>
                       <CardDescription>The dominant industry practice for pipeline repair</CardDescription>
                     </div>
                   </div>
-                  <span className="px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-sm font-medium">
+                  <span className="px-3 py-1 rounded-full bg-gray-800 text-gray-300 text-sm font-medium">
                     Traditional
                   </span>
                 </div>
@@ -236,11 +236,11 @@ export default function BusinessPage() {
                     <h4 className="font-semibold text-sm mb-2 text-muted-foreground">Capabilities</h4>
                     <ul className="space-y-1 text-sm text-muted-foreground">
                       <li className="flex items-center gap-2">
-                        <CheckCircle2 className="h-4 w-4 text-green-600" />
+                        <CheckCircle2 className="h-4 w-4 text-green-400" />
                         Direct access for repair
                       </li>
                       <li className="flex items-center gap-2">
-                        <CheckCircle2 className="h-4 w-4 text-green-600" />
+                        <CheckCircle2 className="h-4 w-4 text-green-400" />
                         Universal applicability
                       </li>
                     </ul>

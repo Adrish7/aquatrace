@@ -3,12 +3,12 @@ import ScrollScrubShowcase from "@/app/robot/scroll-scrub-turntable";
 
 export default function Page() {
   return (
-    <main style={{ background: "#0b0b0c", color: "white" }}>
-      <section style={{ padding: "72px 20px 24px", maxWidth: 1100, margin: "0 auto" }}>
-        <h1 style={{ fontSize: 44, lineHeight: 1.05, margin: 0 }}>
+    <main className="bg-background text-foreground">
+      <section className="px-5 py-20 max-w-[1100px] mx-auto">
+        <h1 className="text-[44px] leading-[1.05] m-0">
           Pipe Crack Repair Robot
         </h1>
-        <p style={{ maxWidth: 820, opacity: 0.8, fontSize: 18, marginTop: 14 }}>
+        <p className="max-w-[820px] opacity-80 text-lg mt-4">
           Scroll to explore the full system (single-canvas Apple-style scrub).
         </p>
       </section>
@@ -67,11 +67,11 @@ export default function Page() {
         ]}
       />
 
-      <section style={{ padding: "70px 20px 110px", maxWidth: 1100, margin: "0 auto", opacity: 0.85 }}>
-        <h2 style={{ fontSize: 28, margin: "0 0 12px" }}>Tuning</h2>
-        <ul style={{ lineHeight: 1.8 }}>
-          <li>Hold <code>Alt</code> and click to copy normalized coordinates for placing boxes/points.</li>
-          <li>Overlays are keyed by <code>sceneKey</code> and <code>start/end</code> (local scene progress 0..1).</li>
+      <section className="px-5 py-[70px] pb-[110px] max-w-[1100px] mx-auto opacity-85">
+        <h2 className="text-[28px] mb-3">Tuning</h2>
+        <ul className="leading-[1.8]">
+          <li>Hold <code className="bg-muted px-1.5 py-0.5 rounded">Alt</code> and click to copy normalized coordinates for placing boxes/points.</li>
+          <li>Overlays are keyed by <code className="bg-muted px-1.5 py-0.5 rounded">sceneKey</code> and <code className="bg-muted px-1.5 py-0.5 rounded">start/end</code> (local scene progress 0..1).</li>
         </ul>
       </section>
     </main>

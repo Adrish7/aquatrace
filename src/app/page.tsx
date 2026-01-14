@@ -92,7 +92,7 @@ export default function Home() {
                 />
               </div>
             </div>
-            <div className="absolute -bottom-6 -left-6 rounded-lg bg-primary p-4 text-primary-foreground shadow-xl z-20 hidden lg:block">
+            <div className="absolute -bottom-6 -left-6 rounded-xl bg-primary p-4 text-primary-foreground shadow-xl z-20 hidden lg:block">
               <div className="text-sm font-medium">Patented Technology</div>
               <div className="text-xs opacity-90">Protected Innovation</div>
             </div>
@@ -180,9 +180,8 @@ export default function Home() {
           <div className="text-center space-y-4">
             <h2 className="text-4xl font-bold tracking-tight">The Crisis in Our Infrastructure</h2>
             <p className="text-xl text-muted-foreground leading-relaxed">
-              Modern society depends on underground water infrastructure—largely invisible until it fails. 
-              Ageing networks are deteriorating faster than they can be repaired, with current solutions causing 
-              massive disruption and leaving early-stage defects undetected until they become critical failures.
+              Ageing water networks deteriorate faster than they can be repaired. Current solutions cause massive disruption 
+              and leave early-stage defects undetected until they become critical failures.
             </p>
           </div>
           
@@ -195,24 +194,20 @@ export default function Home() {
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">
-                  346 billion litres lost daily globally. This represents massive waste of a precious resource 
-                  and billions lost in energy and pumping costs. As climate stress and urban demand rise, 
-                  these invisible losses increasingly threaten global water security.
+                  346 billion litres lost daily globally. Massive waste of a precious resource and billions lost in energy costs.
                 </p>
               </CardContent>
             </Card>
             
             <Card className="relative overflow-hidden border-2 hover:shadow-lg transition-shadow">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-orange-500/10 rounded-bl-full"></div>
+              <div className="absolute top-0 right-0 w-32 h-32 bg-orange-950/30 rounded-bl-full"></div>
               <CardHeader className="relative">
                 <AlertTriangle className="mb-4 h-10 w-10 text-orange-500" />
                 <CardTitle className="text-xl">Disruption</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">
-                  Current repair solutions cause road closures, traffic congestion, and service outages affecting 
-                  civilians, hospitals, schools, and businesses. More than 59% of the average pipe failure cost 
-                  is indirect—tearing up roads generates emissions, noise, and disruption.
+                  Current repairs cause road closures, traffic congestion, and service outages. 59% of pipe failure costs are indirect.
                 </p>
               </CardContent>
             </Card>
@@ -225,9 +220,7 @@ export default function Home() {
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">
-                  Cracks in ageing pipes allow contaminants to enter potable water systems. This is particularly 
-                  critical for industries where water purity is a necessity. Current detection tools have limited 
-                  accuracy, while accurate inline-inspection tools cost tens to hundreds of thousands of dollars.
+                  Cracks allow contaminants into potable water systems. Current detection tools have limited accuracy; accurate inspection costs hundreds of thousands.
                 </p>
               </CardContent>
             </Card>
@@ -235,10 +228,8 @@ export default function Home() {
           
           <div className="rounded-2xl border-2 border-primary/20 bg-primary/5 p-8 text-center">
             <p className="text-lg font-medium leading-relaxed">
-              <span className="text-primary font-bold">The core pain point:</span> Today's water pipeline maintenance 
-              is inefficient, expensive, and disruptive. There is no way to seal early-stage defects internally, 
-              even though they would be the simplest to address. This results in these defects deteriorating into 
-              larger failures—the cycle that the world suffers from today.
+              <span className="text-primary font-bold">The core problem:</span> There's no way to seal early-stage defects internally. 
+              They deteriorate into larger failures—the cycle we're stuck in today.
             </p>
           </div>
         </div>
@@ -247,293 +238,90 @@ export default function Home() {
       {/* Our Solution - Enhanced */}
       <section className="bg-gradient-to-b from-background via-muted/30 to-background py-24">
         <div className="mx-auto w-full max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-4xl space-y-16">
+          <div className="mx-auto max-w-5xl space-y-12">
             <div className="text-center space-y-4">
               <h2 className="text-4xl font-bold tracking-tight">RoverTracer: The First In-Pipe Repair Robot</h2>
               <p className="text-xl text-muted-foreground leading-relaxed">
-                An untethered, autonomous robot that continuously traverses live water pipelines, detecting 
-                early-stage internal defects and performing targeted repairs from within—without any disruption 
-                to water service.
+                An autonomous robot that detects and repairs defects from within live pipelines—no disruption to service.
               </p>
             </div>
             
-            <div className="grid gap-8 md:grid-cols-3">
-              <Card className="border-2 border-primary/20 hover:border-primary/50 hover:shadow-xl transition-all group">
-                <CardHeader className="space-y-4">
-                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors">
+            <div className="relative">
+              {/* Vertical Timeline Line */}
+              <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-primary/20 hidden md:block"></div>
+              
+              <div className="space-y-8">
+                {/* Step 1 */}
+                <div className="relative flex flex-col md:flex-row gap-6 items-start">
+                  <div className="flex-shrink-0 flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 border-2 border-primary/20 relative z-10">
                     <Search className="h-8 w-8 text-primary" />
                   </div>
-                  <CardTitle className="text-xl">1. Detect While Moving</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <p className="text-muted-foreground">
-                    Continuous scanning using <strong>EMAT (Electromagnetic Acoustic Transducer)</strong> sensors 
-                    as the robot moves through live pipelines. Signal processing uses Hilbert envelope extraction 
-                    with statistical thresholding for reliable detection with 90%+ accuracy.
-                  </p>
-                  <div className="flex items-center gap-2 text-sm text-primary font-medium">
-                    <CheckCircle2 className="h-4 w-4" />
-                    <span>Real-time anomaly detection</span>
-                  </div>
-                </CardContent>
-              </Card>
-              
-              <Card className="border-2 border-primary/20 hover:border-primary/50 hover:shadow-xl transition-all group">
-                <CardHeader className="space-y-4">
-                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors">
+                  <Card className="flex-1 border-2 border-primary/20 hover:border-primary/50 hover:shadow-xl transition-all">
+                    <CardHeader>
+                      <CardTitle className="text-xl">1. Detect While Moving</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-muted-foreground mb-3">
+                        Continuous scanning with <strong>EMAT sensors</strong> as the robot moves through pipelines. 
+                        90%+ detection accuracy using real-time signal processing.
+                      </p>
+                      <div className="flex items-center gap-2 text-sm text-primary font-medium">
+                        <CheckCircle2 className="h-4 w-4" />
+                        <span>Real-time anomaly detection</span>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+                
+                {/* Step 2 */}
+                <div className="relative flex flex-col md:flex-row gap-6 items-start">
+                  <div className="flex-shrink-0 flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 border-2 border-primary/20 relative z-10">
                     <MapPin className="h-8 w-8 text-primary" />
                   </div>
-                  <CardTitle className="text-xl">2. Pause & Localize</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <p className="text-muted-foreground">
-                    When anomalies are detected, the robot pauses using omnidirectional wheels and thrusters 
-                    to precisely localize the defect location. High-RPM scrubber cleans residue around cracks 
-                    to ensure compatible surface for patching.
-                  </p>
-                  <div className="flex items-center gap-2 text-sm text-primary font-medium">
-                    <CheckCircle2 className="h-4 w-4" />
-                    <span>Precise defect localization</span>
-                  </div>
-                </CardContent>
-              </Card>
-              
-              <Card className="border-2 border-primary/20 hover:border-primary/50 hover:shadow-xl transition-all group">
-                <CardHeader className="space-y-4">
-                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors">
+                  <Card className="flex-1 border-2 border-primary/20 hover:border-primary/50 hover:shadow-xl transition-all">
+                    <CardHeader>
+                      <CardTitle className="text-xl">2. Pause & Localize</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-muted-foreground mb-3">
+                        Robot pauses to precisely localize defects. High-RPM scrubber prepares the surface for patching.
+                      </p>
+                      <div className="flex items-center gap-2 text-sm text-primary font-medium">
+                        <CheckCircle2 className="h-4 w-4" />
+                        <span>Precise defect localization</span>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+                
+                {/* Step 3 */}
+                <div className="relative flex flex-col md:flex-row gap-6 items-start">
+                  <div className="flex-shrink-0 flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 border-2 border-primary/20 relative z-10">
                     <Droplet className="h-8 w-8 text-primary" />
                   </div>
-                  <CardTitle className="text-xl">3. Seal Early Cracks</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <p className="text-muted-foreground">
-                    Multi-linear actuator system deploys patch with <strong>SealBoss Flexgel</strong>—a hydrophilic 
-                    polyurethane injection resin. Lyapunov-based control framework ensures stability and precise 
-                    patch adhesion, preventing crack progression.
-                  </p>
-                  <div className="flex items-center gap-2 text-sm text-primary font-medium">
-                    <CheckCircle2 className="h-4 w-4" />
-                    <span>In-situ repair without excavation</span>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-            
-            <div className="grid md:grid-cols-2 gap-6">
-              <Card className="border-2 bg-primary/5">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Zap className="h-5 w-5 text-primary" />
-                    Key Advantages
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <div className="flex items-start gap-3">
-                    <Check className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                    <p className="text-sm"><strong>Operates in live pipelines</strong>—no service disruption</p>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <Check className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                    <p className="text-sm"><strong>Autonomous operation</strong>—minimal human intervention</p>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <Check className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                    <p className="text-sm"><strong>Reusable units</strong>—significant cost savings</p>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <Check className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                    <p className="text-sm"><strong>Swarm capability</strong>—rapid network coverage</p>
-                  </div>
-                </CardContent>
-              </Card>
-              
-              <Card className="border-2 bg-primary/5">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Target className="h-5 w-5 text-primary" />
-                    Impact
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <div className="space-y-1">
-                    <p className="text-sm font-semibold">70-90% reduction in repair time</p>
-                    <p className="text-xs text-muted-foreground">Hours vs. weeks for traditional methods</p>
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-sm font-semibold">10-20 years extended pipe service life</p>
-                    <p className="text-xs text-muted-foreground">Prevents small cracks from progressing</p>
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-sm font-semibold">Zero water outages</p>
-                    <p className="text-xs text-muted-foreground">Operations in live pipelines</p>
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-sm font-semibold">Reduced soil erosion & habitat degradation</p>
-                    <p className="text-xs text-muted-foreground">Minimal excavation required</p>
-                  </div>
-                </CardContent>
-              </Card>
+                  <Card className="flex-1 border-2 border-primary/20 hover:border-primary/50 hover:shadow-xl transition-all">
+                    <CardHeader>
+                      <CardTitle className="text-xl">3. Seal Early Cracks</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-muted-foreground mb-3">
+                        Deploys patch with <strong>SealBoss Flexgel</strong> using multi-linear actuators. 
+                        Lyapunov-based control ensures precise adhesion.
+                      </p>
+                      <div className="flex items-center gap-2 text-sm text-primary font-medium">
+                        <CheckCircle2 className="h-4 w-4" />
+                        <span>In-situ repair without excavation</span>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Competitive Advantages - Enhanced */}
-      <section className="mx-auto w-full max-w-7xl px-6 py-24 lg:px-8">
-        <div className="mx-auto max-w-5xl space-y-16">
-          <div className="text-center space-y-4">
-            <h2 className="text-4xl font-bold tracking-tight">Why RoverTracer Is Unmatched</h2>
-            <p className="text-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto">
-              Unlike any existing solution, RoverTracer is the first robot that <strong>both detects and seals 
-              early-stage cracks</strong> while operating in live, water-flowing pipelines. This combination of 
-              capabilities doesn't exist anywhere else.
-            </p>
-          </div>
-          
-          {/* Competition Comparison */}
-          <div className="space-y-6">
-            <div className="rounded-2xl border-2 border-muted p-6 hover:border-primary/30 transition-colors">
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-muted flex items-center justify-center">
-                  <X className="h-6 w-6 text-muted-foreground" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-semibold text-lg mb-2">External Fixed Sensors</h3>
-                  <p className="text-muted-foreground mb-3">
-                    Monitor-only systems that provide indirect signals with limited accuracy. 
-                    <strong className="text-destructive"> Cannot repair defects.</strong>
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    <span className="text-xs px-2 py-1 rounded bg-muted text-muted-foreground">Monitor Only</span>
-                    <span className="text-xs px-2 py-1 rounded bg-muted text-muted-foreground">Limited Accuracy</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <div className="rounded-2xl border-2 border-muted p-6 hover:border-primary/30 transition-colors">
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-muted flex items-center justify-center">
-                  <X className="h-6 w-6 text-muted-foreground" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-semibold text-lg mb-2">Inline Inspection Tools (PIGs)</h3>
-                  <p className="text-muted-foreground mb-3">
-                    Cost tens to hundreds of thousands of dollars. 
-                    <strong className="text-destructive"> Inspection-only, typically require pipeline shutdowns.</strong>
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    <span className="text-xs px-2 py-1 rounded bg-muted text-muted-foreground">Very Expensive</span>
-                    <span className="text-xs px-2 py-1 rounded bg-muted text-muted-foreground">Requires Shutdown</span>
-                    <span className="text-xs px-2 py-1 rounded bg-muted text-muted-foreground">No Repair</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <div className="rounded-2xl border-2 border-muted p-6 hover:border-primary/30 transition-colors">
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-muted flex items-center justify-center">
-                  <X className="h-6 w-6 text-muted-foreground" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-semibold text-lg mb-2">Trenchless Rehabilitation (CIPP)</h3>
-                  <p className="text-muted-foreground mb-3">
-                    Cured-in-place pipe lining. Only used when damage is extreme. 
-                    <strong className="text-destructive"> Reactive, costly, and still disruptive.</strong>
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    <span className="text-xs px-2 py-1 rounded bg-muted text-muted-foreground">Reactive Only</span>
-                    <span className="text-xs px-2 py-1 rounded bg-muted text-muted-foreground">Disruptive</span>
-                    <span className="text-xs px-2 py-1 rounded bg-muted text-muted-foreground">Expensive</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <div className="rounded-2xl border-2 border-muted p-6 hover:border-primary/30 transition-colors">
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-muted flex items-center justify-center">
-                  <X className="h-6 w-6 text-muted-foreground" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-semibold text-lg mb-2">Manual Excavation</h3>
-                  <p className="text-muted-foreground mb-3">
-                    The dominant industry practice. Universal, but 
-                    <strong className="text-destructive"> slow, labor-intensive, and highly disruptive.</strong>
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    <span className="text-xs px-2 py-1 rounded bg-muted text-muted-foreground">Slow</span>
-                    <span className="text-xs px-2 py-1 rounded bg-muted text-muted-foreground">Labor Intensive</span>
-                    <span className="text-xs px-2 py-1 rounded bg-muted text-muted-foreground">Highly Disruptive</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            {/* AquaTrace Highlight */}
-            <div className="rounded-2xl border-2 border-primary bg-gradient-to-br from-primary/10 via-primary/5 to-background p-8 shadow-xl relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-bl-full blur-3xl"></div>
-              <div className="relative z-10">
-                <div className="flex items-start gap-4 mb-4">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-primary flex items-center justify-center">
-                    <Check className="h-6 w-6 text-primary-foreground" />
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <h3 className="font-bold text-2xl text-primary">AquaTrace RoverTracer</h3>
-                      <span className="text-xs px-3 py-1 rounded-full bg-primary text-primary-foreground font-semibold">
-                        THE ONLY SOLUTION
-                      </span>
-                    </div>
-                    <p className="text-lg font-medium mb-4">
-                      The first robot that detects, localizes, and seals early-stage cracks in live pipelines—all in one autonomous system.
-                    </p>
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-2 text-sm">
-                          <CheckCircle2 className="h-5 w-5 text-primary" />
-                          <span className="font-medium">Detect + Seal in Live Pipes</span>
-                        </div>
-                        <div className="flex items-center gap-2 text-sm">
-                          <CheckCircle2 className="h-5 w-5 text-primary" />
-                          <span className="font-medium">No Service Disruption</span>
-                        </div>
-                        <div className="flex items-center gap-2 text-sm">
-                          <CheckCircle2 className="h-5 w-5 text-primary" />
-                          <span className="font-medium">90%+ Detection Accuracy</span>
-                        </div>
-                      </div>
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-2 text-sm">
-                          <CheckCircle2 className="h-5 w-5 text-primary" />
-                          <span className="font-medium">Autonomous Operation</span>
-                        </div>
-                        <div className="flex items-center gap-2 text-sm">
-                          <CheckCircle2 className="h-5 w-5 text-primary" />
-                          <span className="font-medium">Reusable & Cost-Effective</span>
-                        </div>
-                        <div className="flex items-center gap-2 text-sm">
-                          <CheckCircle2 className="h-5 w-5 text-primary" />
-                          <span className="font-medium">Swarm Capability</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="mt-6 pt-6 border-t border-primary/20">
-                      <p className="text-sm text-muted-foreground italic">
-                        <strong>Note:</strong> RoverTracer is purpose-built for early-stage defects. While it doesn't 
-                        address larger circumferential failures directly, this is intentional—large failures occur from 
-                        small defects that were ignored. By focusing on early intervention, RoverTracer prevents these 
-                        catastrophic failures from ever occurring.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      
 
       {/* The RoverTracer Model - Enhanced */}
       <section className="bg-gradient-to-b from-background via-muted/30 to-background py-24">
@@ -599,116 +387,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Target Markets - Enhanced */}
-      <section className="mx-auto w-full max-w-7xl px-6 py-24 lg:px-8">
-        <div className="mx-auto max-w-5xl space-y-12">
-          <div className="text-center space-y-4">
-            <h2 className="text-4xl font-bold tracking-tight">Serving Multiple Market Segments</h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              RoverTracer serves critical segments of the water infrastructure ecosystem, from municipal utilities 
-              to industrial facilities where water purity is non-negotiable.
-            </p>
-          </div>
-          
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            <Card className="border-2 hover:border-primary/50 hover:shadow-lg transition-all group">
-              <CardHeader>
-                <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-primary/10 mb-4 group-hover:bg-primary/20 transition-colors">
-                  <Building2 className="h-6 w-6 text-primary" />
-                </div>
-                <CardTitle>Municipal/Government</CardTitle>
-                <CardDescription>Water utilities & public infrastructure</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  Primary customers responsible for maintaining water distribution networks. RoverTracer helps 
-                  reduce water loss and repair costs while avoiding societal disruption.
-                </p>
-              </CardContent>
-            </Card>
-            
-            <Card className="border-2 hover:border-primary/50 hover:shadow-lg transition-all group">
-              <CardHeader>
-                <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-primary/10 mb-4 group-hover:bg-primary/20 transition-colors">
-                  <Building2 className="h-6 w-6 text-primary" />
-                </div>
-                <CardTitle>Private Utilities</CardTitle>
-                <CardDescription>Water service providers</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  Private utilities providing water-loss reduction or emergency repairs. Early adopters due to 
-                  cost-effectiveness and rapid deployment capabilities.
-                </p>
-              </CardContent>
-            </Card>
-            
-            <Card className="border-2 hover:border-primary/50 hover:shadow-lg transition-all group">
-              <CardHeader>
-                <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-primary/10 mb-4 group-hover:bg-primary/20 transition-colors">
-                  <Factory className="h-6 w-6 text-primary" />
-                </div>
-                <CardTitle>Industrial Networks</CardTitle>
-                <CardDescription>Manufacturing & processing facilities</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  Large manufacturing sites where pipe integrity and water purity are vital. High sensitivity 
-                  to downtime makes industrial facilities ideal early adopters.
-                </p>
-              </CardContent>
-            </Card>
-            
-            <Card className="border-2 hover:border-primary/50 hover:shadow-lg transition-all group">
-              <CardHeader>
-                <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-primary/10 mb-4 group-hover:bg-primary/20 transition-colors">
-                  <Search className="h-6 w-6 text-primary" />
-                </div>
-                <CardTitle>Pipe Assessment Providers</CardTitle>
-                <CardDescription>Inspection service companies</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  Companies offering pipe inspection services. RoverTracer can detect potential defects before 
-                  installation, expanding assessment capabilities.
-                </p>
-              </CardContent>
-            </Card>
-            
-            <Card className="border-2 hover:border-primary/50 hover:shadow-lg transition-all group">
-              <CardHeader>
-                <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-primary/10 mb-4 group-hover:bg-primary/20 transition-colors">
-                  <Wrench className="h-6 w-6 text-primary" />
-                </div>
-                <CardTitle>Pipe Manufacturers</CardTitle>
-                <CardDescription>Pre-deployment quality control</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  Manufacturers can use RoverTracer to inspect pipes before installation, ensuring quality 
-                  and preventing future failures.
-                </p>
-              </CardContent>
-            </Card>
-            
-            <Card className="border-2 border-primary/50 bg-primary/5 hover:shadow-lg transition-all">
-              <CardHeader>
-                <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-primary mb-4">
-                  <Globe className="h-6 w-6 text-primary-foreground" />
-                </div>
-                <CardTitle>Global Opportunity</CardTitle>
-                <CardDescription>$70B market, growing to $166B by 2034</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm font-medium">
-                  As urban density intensifies and infrastructure ages globally, the need for scalable, 
-                  non-disruptive pipe inspection and repair will only increase.
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
 
       {/* Roadmap - Enhanced */}
       <section className="bg-gradient-to-b from-background via-muted/30 to-background py-24">
