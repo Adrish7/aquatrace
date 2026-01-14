@@ -1,24 +1,55 @@
-// app/robot/ScrollScrubShowcase.tsx
+// app/robot/scroll-scrub-turntable.tsx
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
 
-type FeatureCard = { tag: string; title: string; body: string };
-
 type Scene = {
   key: string;
-  basePath: string;     // "/robot_full/scene1"
-  frameCount: number;   // 72
-  scrollVh: number;     // how much scroll space this scene gets within the shared timeline
-  enterProgress?: number; // Level 2: start scene slightly progressed (0..1)
-  introTitle: string;
-  introBody: string;
-  featureCards: [FeatureCard, FeatureCard, FeatureCard];
+  basePath: string;
+  frameCount: number;
+  scrollVh: number;
+  enterProgress?: number; // 0..1
+};
+
+type OverlayBox = {
+  id: string;
+  x: number; // 0..1 (viewport normalized)
+  y: number; // 0..1
+  w?: number; // 0..1 of viewport width (recommended 0.22..0.35)
+  align?: "left" | "center" | "right"; // default "left"
+  tag?: string;
+  title: string;
+  body?: string;
+};
+
+type OverlayPoint = {
+  id: string;
+  x: number; // 0..1 (viewport normalized)
+  y: number; // 0..1
+  rPx?: number; // dot radius in px
+};
+
+type OverlayLink = {
+  boxId: string;
+  pointId: string;
+  gapPx?: number; // stop short of point
+};
+
+export type Overlay = {
+  id: string;
+  sceneKey: string; // match Scene.key
+  start: number; // local progress 0..1 inside that scene
+  end: number; // local progress 0..1 inside that scene
+  fade?: number; // fade band in local progress (default 0.03)
+  boxes: OverlayBox[];
+  points?: OverlayPoint[];
+  links?: OverlayLink[];
 };
 
 type Props = {
   scenes: Scene[];
-  scrollHeightVh?: number; // fallback; if omitted, we sum scene.scrollVh + some padding
+  overlays?: Overlay[];
+  scrollHeightVh?: number;
   vignette?: boolean;
 };
 
@@ -35,8 +66,16 @@ function frameSrc(basePath: string, i: number) {
   return `${basePath}/frame_${String(i + 1).padStart(4, "0")}.webp`;
 }
 
+function toSvgX(x01: number) {
+  return x01 * 1000;
+}
+function toSvgY(y01: number) {
+  return y01 * 1000;
+}
+
 export default function ScrollScrubShowcase({
   scenes,
+  overlays = [],
   scrollHeightVh,
   vignette = true,
 }: Props) {
@@ -46,19 +85,17 @@ export default function ScrollScrubShowcase({
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
-  // Global progress in the whole shared timeline
   const [globalP, setGlobalP] = useState(0);
   const globalPRef = useRef(0);
 
-  // Lazy-loaded image caches per scene
   const imagesBySceneRef = useRef<Array<Array<HTMLImageElement | undefined>>>([]);
   const firstGoodBySceneRef = useRef<Array<number | null>>([]);
   const loadingSceneRef = useRef<Record<number, boolean>>({});
-
-  // Which scenes have at least 1 frame successfully loaded
   const [sceneReady, setSceneReady] = useState<Record<number, boolean>>({});
 
-  // Compute per-scene timeline ranges based on scrollVh weights
+  // Track viewport for converting gapPx -> svg units
+  const [vp, setVp] = useState({ w: 1, h: 1 });
+
   const ranges = useMemo(() => {
     const total = scenes.reduce((acc, s) => acc + (s.scrollVh || 0), 0) || 1;
     let cur = 0;
@@ -69,34 +106,27 @@ export default function ScrollScrubShowcase({
       cur = end;
       return { start, end };
     });
-    // force last end = 1
     if (r.length) r[r.length - 1].end = 1;
     return r;
   }, [scenes]);
 
   const totalHeightVh = useMemo(() => {
     if (scrollHeightVh != null) return scrollHeightVh;
-    // sum scene scrollVh + a little breathing room
     const base = scenes.reduce((acc, s) => acc + (s.scrollVh || 0), 0);
     return Math.max(260, base + 40);
   }, [scrollHeightVh, scenes]);
 
-  // Crossfade band near boundary (in local progress space)
-  // 0.10 means last 10% of scene blends into next
   const transitionBand = 0.12;
 
   const getSceneAtGlobalP = (p: number) => {
-    const idx =
-      ranges.findIndex((r) => p >= r.start && p < r.end) !== -1
-        ? ranges.findIndex((r) => p >= r.start && p < r.end)
-        : ranges.length - 1;
+    const found = ranges.findIndex((r) => p >= r.start && p < r.end);
+    const idx = found !== -1 ? found : ranges.length - 1;
 
     const r = ranges[Math.max(0, idx)];
     const denom = Math.max(1e-6, r.end - r.start);
     let local = (p - r.start) / denom;
     local = clamp01(local);
 
-    // Level 2 "momentum": start slightly progressed
     const enter = clamp01(scenes[idx]?.enterProgress ?? 0);
     local = clamp01(enter + (1 - enter) * local);
 
@@ -200,13 +230,14 @@ export default function ScrollScrubShowcase({
       canvas.width = Math.floor(rect.width * dpr);
       canvas.height = Math.floor(rect.height * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      setVp({ w: Math.max(1, rect.width), h: Math.max(1, rect.height) });
     };
 
     const getGlobalProgress = () => {
       const section = sectionRef.current!;
       const rect = section.getBoundingClientRect();
       const viewH = window.innerHeight;
-
       const total = rect.height - viewH;
       const scrolled = -rect.top;
       return clamp01(total <= 0 ? 0 : scrolled / total);
@@ -240,14 +271,12 @@ export default function ScrollScrubShowcase({
 
       const { idx, local } = getSceneAtGlobalP(p);
 
-      // Always try to preload current + next scene
       preloadScene(idx);
       if (idx + 1 < scenes.length) preloadScene(idx + 1);
 
       const rect = canvas.getBoundingClientRect();
       ctx.clearRect(0, 0, rect.width, rect.height);
 
-      // If current scene not ready yet, show placeholder text
       if (!sceneReady[idx]) {
         ctx.save();
         ctx.globalAlpha = 0.9;
@@ -260,36 +289,26 @@ export default function ScrollScrubShowcase({
         return;
       }
 
-      // Determine crossfade into next scene near the end
-      const fadeT = smoothstep(1 - transitionBand, 1, local); // 0..1 near end
+      const fadeT = smoothstep(1 - transitionBand, 1, local);
       const hasNext = idx + 1 < scenes.length && sceneReady[idx + 1];
 
-      // Draw current
       const desiredA = Math.round(local * (scenes[idx].frameCount - 1));
       const chosenA = pickClosestLoadedIndex(idx, desiredA);
       const imgA = imagesBySceneRef.current[idx][chosenA];
-
       if (imgA && imgA.naturalWidth > 0) {
         drawImageCover(imgA, hasNext ? 1 - fadeT : 1);
       }
 
-      // Draw next blended in
       if (hasNext && fadeT > 0) {
         const enterB = clamp01(scenes[idx + 1].enterProgress ?? 0);
-      
-        // ✅ IMPORTANT: do NOT advance the next scene during the crossfade.
-        // Otherwise it "plays" quickly, then snaps back when the scene actually starts.
         const localB = enterB;
-      
         const desiredB = Math.round(localB * (scenes[idx + 1].frameCount - 1));
         const chosenB = pickClosestLoadedIndex(idx + 1, desiredB);
         const imgB = imagesBySceneRef.current[idx + 1][chosenB];
-      
         if (imgB && imgB.naturalWidth > 0) {
           drawImageCover(imgB, fadeT);
         }
       }
-      
 
       raf = requestAnimationFrame(tick);
     };
@@ -297,10 +316,7 @@ export default function ScrollScrubShowcase({
     window.addEventListener("resize", resize, { passive: true });
     resize();
 
-    // kick off preloading first scene immediately
-    preloadScene(0).then(() => {
-      tick();
-    });
+    preloadScene(0).then(() => tick());
 
     return () => {
       window.removeEventListener("resize", resize);
@@ -309,72 +325,87 @@ export default function ScrollScrubShowcase({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mounted, scenes, sceneReady]);
 
-  // UI uses current scene + local progress (not global)
+  // Current active scene + local progress (for overlays)
   const { idx: activeIdx, local: activeLocal } = useMemo(
     () => getSceneAtGlobalP(globalP),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [globalP, ranges]
   );
+  const activeSceneKey = scenes[activeIdx]?.key;
 
-  const activeScene = scenes[activeIdx];
-
-  // Intro->features transition inside a scene
-  const introToFeatures = smoothstep(0.06, 0.14, activeLocal);
-  const bottomOpacity = 1 - introToFeatures;
-  const featuresOpacity = introToFeatures;
-
-  // Also fade UI during crossfade into next scene
+  // Fade UI near scene crossfade end
   const uiFadeOut = smoothstep(1 - transitionBand, 1, activeLocal);
   const uiOpacity = 1 - uiFadeOut;
 
-  // Diagram lines (point near center, do not touch center)
-  const CENTER_X = 500;
-  const CENTER_Y = 500;
-  const GAP = 60;
+  // ONE start textbox only (global)
+  const startBoxOpacity = 1 - smoothstep(0.02, 0.06, globalP);
 
-  const shortenToCenter = (x1: number, y1: number, x2: number, y2: number, gap: number) => {
+  // Helpers for overlay alpha (fade in/out within overlay window)
+  const overlayAlpha = (start: number, end: number, fade: number, p: number) => {
+    const f = Math.max(0.0001, fade);
+    const aIn = smoothstep(start, start + f, p);
+    const aOut = 1 - smoothstep(end - f, end, p);
+    return clamp01(aIn * aOut);
+  };
+
+  // Active overlays for current scene
+  const activeOverlays = useMemo(() => {
+    return overlays
+      .filter((o) => o.sceneKey === activeSceneKey)
+      .map((o) => {
+        const a = overlayAlpha(o.start, o.end, o.fade ?? 0.03, activeLocal);
+        return { overlay: o, alpha: a };
+      })
+      .filter((x) => x.alpha > 0.001);
+  }, [overlays, activeSceneKey, activeLocal]);
+
+  // Convert gapPx to svg units (viewBox 1000x1000) based on min viewport dimension
+  const gapPxToSvg = (gapPx: number) => {
+    const minDim = Math.max(1, Math.min(vp.w, vp.h));
+    return (gapPx / minDim) * 1000;
+  };
+
+  const shortenLine = (
+    x1: number,
+    y1: number,
+    x2: number,
+    y2: number,
+    gapSvg: number
+  ) => {
     const dx = x2 - x1;
     const dy = y2 - y1;
     const len = Math.sqrt(dx * dx + dy * dy) || 1;
     const ux = dx / len;
     const uy = dy / len;
-    return { x2: x2 - ux * gap, y2: y2 - uy * gap };
+    return { x2: x2 - ux * gapSvg, y2: y2 - uy * gapSvg };
   };
 
-  const leftAnchor = { x: 250, y: 420 };
-  const topAnchor = { x: 540, y: 230 };
-  const rightAnchor = { x: 750, y: 540 };
+  // Alt+Click coordinate picker (copy normalized coords)
+  const onOverlayClick = async (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!e.altKey) return;
+    const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
+    const x = clamp01((e.clientX - rect.left) / rect.width);
+    const y = clamp01((e.clientY - rect.top) / rect.height);
+    const payload = `{ x: ${x.toFixed(4)}, y: ${y.toFixed(4)} }`;
+    console.log("[OverlayPicker]", payload, {
+      sceneKey: activeSceneKey,
+      local: Number(activeLocal.toFixed(4)),
+      global: Number(globalP.toFixed(4)),
+    });
+    try {
+      await navigator.clipboard.writeText(payload);
+    } catch {
+      // ignore clipboard failures
+    }
+  };
 
-  const leftEnd = shortenToCenter(leftAnchor.x, leftAnchor.y, CENTER_X, CENTER_Y, GAP);
-  const topEnd = shortenToCenter(topAnchor.x, topAnchor.y, CENTER_X, CENTER_Y, GAP);
-  const rightEnd = shortenToCenter(rightAnchor.x, rightAnchor.y, CENTER_X, CENTER_Y, GAP);
-
-  // SSR-safe shell
   if (!mounted) {
     return (
       <section style={{ height: `${totalHeightVh}vh`, position: "relative" }}>
-        <div style={{ position: "sticky", top: 0, height: "100vh", width: "100%", overflow: "hidden" }}>
-          <div
-            style={{
-              position: "absolute",
-              top: 18,
-              left: 18,
-              padding: "10px 12px",
-              borderRadius: 12,
-              background: "rgba(0,0,0,0.55)",
-              border: "1px solid rgba(255,255,255,0.12)",
-              color: "white",
-              fontSize: 14,
-            }}
-          >
-            Loading…
-          </div>
-        </div>
+        <div style={{ position: "sticky", top: 0, height: "100vh", width: "100%", overflow: "hidden" }} />
       </section>
     );
   }
-
-  const [leftCard, topCard, rightCard] = activeScene.featureCards;
 
   return (
     <section ref={sectionRef} style={{ height: `${totalHeightVh}vh`, position: "relative" }}>
@@ -387,24 +418,24 @@ export default function ScrollScrubShowcase({
               position: "absolute",
               inset: 0,
               pointerEvents: "none",
-              background:
-                "radial-gradient(80% 60% at 50% 40%, rgba(0,0,0,0.05), rgba(0,0,0,0.65))",
+              background: "radial-gradient(80% 60% at 50% 40%, rgba(0,0,0,0.05), rgba(0,0,0,0.65))",
             }}
           />
         )}
 
-        {/* UI layer */}
+        {/* UI layer (clickable for Alt+Click coordinate picking) */}
         <div
+          onClick={onOverlayClick}
           style={{
             position: "absolute",
             inset: 0,
             opacity: uiOpacity,
             transition: "opacity 180ms linear",
             color: "white",
-            pointerEvents: "none",
+            pointerEvents: "auto",
           }}
         >
-          {/* Bottom intro box */}
+          {/* ONE start textbox */}
           <div
             style={{
               position: "absolute",
@@ -419,140 +450,170 @@ export default function ScrollScrubShowcase({
               backdropFilter: "blur(10px)",
               WebkitBackdropFilter: "blur(10px)",
               border: "1px solid rgba(255,255,255,0.12)",
-              opacity: bottomOpacity,
-              transform: `translateY(${Math.round(10 * (1 - bottomOpacity))}px)`,
-              transition: "opacity 420ms ease, transform 420ms ease",
+              opacity: startBoxOpacity,
+              transform: `translateY(${Math.round(10 * (1 - startBoxOpacity))}px)`,
+              transition: "opacity 220ms linear, transform 220ms ease",
+              pointerEvents: startBoxOpacity > 0.05 ? "auto" : "none",
             }}
           >
             <div style={{ fontSize: 14, opacity: 0.7, marginBottom: 6 }}>
-              Scene {activeIdx + 1}/{scenes.length} • {Math.round(activeLocal * 100)}%
+              Scroll to explore • (Alt+Click to copy coords)
             </div>
             <div style={{ fontSize: 22, fontWeight: 650, marginBottom: 8 }}>
-              {activeScene.introTitle}
+              RoverTracer in-pipe crack repair
             </div>
             <div style={{ fontSize: 16, opacity: 0.85, lineHeight: 1.5 }}>
-              {activeScene.introBody}
+              We’ll now place callouts per segment using an overlay timeline.
             </div>
           </div>
 
-          {/* Feature callouts */}
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              opacity: featuresOpacity,
-              transition: "opacity 420ms ease",
-            }}
-          >
-            {/* Diagram lines */}
-            <svg
-              viewBox="0 0 1000 1000"
-              preserveAspectRatio="none"
+          {/* Overlays */}
+          {activeOverlays.map(({ overlay, alpha }) => {
+            const points = overlay.points ?? [];
+            const links = overlay.links ?? [];
+
+            // Build lookup maps
+            const boxById = new Map(overlay.boxes.map((b) => [b.id, b]));
+            const pointById = new Map(points.map((p) => [p.id, p]));
+
+            return (
+              <div
+                key={overlay.id}
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  opacity: alpha,
+                  transition: "opacity 120ms linear",
+                  pointerEvents: alpha > 0.05 ? "auto" : "none",
+                }}
+              >
+                {/* Lines layer */}
+                <svg
+                  viewBox="0 0 1000 1000"
+                  preserveAspectRatio="none"
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    width: "100%",
+                    height: "100%",
+                    pointerEvents: "none",
+                  }}
+                >
+                  {links.map((ln, i) => {
+                    const b = boxById.get(ln.boxId);
+                    const p = pointById.get(ln.pointId);
+                    if (!b || !p) return null;
+
+                    const x1 = toSvgX(b.x);
+                    const y1 = toSvgY(b.y);
+                    const x2 = toSvgX(p.x);
+                    const y2 = toSvgY(p.y);
+
+                    const gapSvg = gapPxToSvg(ln.gapPx ?? 26);
+                    const end = shortenLine(x1, y1, x2, y2, gapSvg);
+
+                    return (
+                      <g key={`${overlay.id}-ln-${i}`}>
+                        <line
+                          x1={x1}
+                          y1={y1}
+                          x2={end.x2}
+                          y2={end.y2}
+                          stroke="rgba(255,255,255,0.78)"
+                          strokeWidth={2}
+                          strokeLinecap="round"
+                        />
+                      </g>
+                    );
+                  })}
+
+                  {/* Points (dots) */}
+                  {points.map((p) => {
+                    const rSvg = gapPxToSvg(p.rPx ?? 6);
+                    return (
+                      <circle
+                        key={`${overlay.id}-pt-${p.id}`}
+                        cx={toSvgX(p.x)}
+                        cy={toSvgY(p.y)}
+                        r={rSvg}
+                        fill="rgba(255,255,255,0.92)"
+                      />
+                    );
+                  })}
+                </svg>
+
+                {/* Boxes */}
+                {overlay.boxes.map((b) => {
+                  const align = b.align ?? "left";
+                  const widthCss =
+                    b.w != null ? `min(${Math.round(b.w * 100)}vw, 520px)` : "min(360px, calc(100vw - 48px))";
+
+                  // anchor box at (x,y) using transform
+                  // align affects the anchor point
+                  const tx =
+                    align === "center" ? "-50%" : align === "right" ? "-100%" : "0%";
+
+                  return (
+                    <div
+                      key={`${overlay.id}-box-${b.id}`}
+                      style={{
+                        position: "absolute",
+                        left: `${b.x * 100}%`,
+                        top: `${b.y * 100}%`,
+                        transform: `translate(${tx}, -50%)`,
+                        width: widthCss,
+                        padding: "16px 16px",
+                        borderRadius: 16,
+                        background: "rgba(0,0,0,0.55)",
+                        backdropFilter: "blur(10px)",
+                        WebkitBackdropFilter: "blur(10px)",
+                        border: "1px solid rgba(255,255,255,0.12)",
+                      }}
+                    >
+                      {b.tag && (
+                        <div style={{ fontSize: 12, opacity: 0.65, marginBottom: 6 }}>
+                          {b.tag}
+                        </div>
+                      )}
+                      <div style={{ fontSize: 20, fontWeight: 650, marginBottom: b.body ? 8 : 0 }}>
+                        {b.title}
+                      </div>
+                      {b.body && (
+                        <div style={{ fontSize: 15, opacity: 0.85, lineHeight: 1.5 }}>
+                          {b.body}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Loading chip */}
+        {(() => {
+          const { idx } = getSceneAtGlobalP(globalPRef.current);
+          return !sceneReady[idx] ? (
+            <div
               style={{
                 position: "absolute",
-                inset: 0,
-                width: "100%",
-                height: "100%",
+                top: 18,
+                left: 18,
+                padding: "10px 12px",
+                borderRadius: 12,
+                background: "rgba(0,0,0,0.55)",
+                border: "1px solid rgba(255,255,255,0.12)",
+                fontSize: 14,
+                opacity: 0.9,
+                color: "white",
                 pointerEvents: "none",
               }}
             >
-              <line x1={leftAnchor.x} y1={leftAnchor.y} x2={leftEnd.x2} y2={leftEnd.y2} stroke="rgba(255,255,255,0.78)" strokeWidth={2} strokeLinecap="round" />
-              <line x1={topAnchor.x} y1={topAnchor.y} x2={topEnd.x2} y2={topEnd.y2} stroke="rgba(255,255,255,0.78)" strokeWidth={2} strokeLinecap="round" />
-              <line x1={rightAnchor.x} y1={rightAnchor.y} x2={rightEnd.x2} y2={rightEnd.y2} stroke="rgba(255,255,255,0.78)" strokeWidth={2} strokeLinecap="round" />
-              <circle cx={leftEnd.x2} cy={leftEnd.y2} r={5.5} fill="rgba(255,255,255,0.92)" />
-              <circle cx={topEnd.x2} cy={topEnd.y2} r={5.5} fill="rgba(255,255,255,0.92)" />
-              <circle cx={rightEnd.x2} cy={rightEnd.y2} r={5.5} fill="rgba(255,255,255,0.92)" />
-            </svg>
-
-            {/* LEFT box */}
-            <div
-              style={{
-                position: "absolute",
-                left: 24,
-                top: "42vh",
-                width: "min(360px, calc(100vw - 48px))",
-                padding: "16px 16px",
-                borderRadius: 16,
-                background: "rgba(0,0,0,0.55)",
-                backdropFilter: "blur(10px)",
-                WebkitBackdropFilter: "blur(10px)",
-                border: "1px solid rgba(255,255,255,0.12)",
-                transform: `translateX(${Math.round(-10 * (1 - featuresOpacity))}px)`,
-                transition: "transform 420ms ease",
-              }}
-            >
-              <div style={{ fontSize: 12, opacity: 0.65, marginBottom: 6 }}>{leftCard.tag}</div>
-              <div style={{ fontSize: 20, fontWeight: 650, marginBottom: 8 }}>{leftCard.title}</div>
-              <div style={{ fontSize: 15, opacity: 0.85, lineHeight: 1.5 }}>{leftCard.body}</div>
+              Loading frames…
             </div>
-
-            {/* TOP box */}
-            <div
-              style={{
-                position: "absolute",
-                left: "50%",
-                top: 24,
-                transform: `translate(-50%, ${Math.round(-10 * (1 - featuresOpacity))}px)`,
-                width: "min(520px, calc(100vw - 48px))",
-                padding: "16px 16px",
-                borderRadius: 16,
-                background: "rgba(0,0,0,0.55)",
-                backdropFilter: "blur(10px)",
-                WebkitBackdropFilter: "blur(10px)",
-                border: "1px solid rgba(255,255,255,0.12)",
-                transition: "transform 420ms ease",
-                textAlign: "center",
-              }}
-            >
-              <div style={{ fontSize: 12, opacity: 0.65, marginBottom: 6 }}>{topCard.tag}</div>
-              <div style={{ fontSize: 20, fontWeight: 650, marginBottom: 8 }}>{topCard.title}</div>
-              <div style={{ fontSize: 15, opacity: 0.85, lineHeight: 1.5 }}>{topCard.body}</div>
-            </div>
-
-            {/* RIGHT box */}
-            <div
-              style={{
-                position: "absolute",
-                right: 24,
-                top: "54vh",
-                width: "min(360px, calc(100vw - 48px))",
-                padding: "16px 16px",
-                borderRadius: 16,
-                background: "rgba(0,0,0,0.55)",
-                backdropFilter: "blur(10px)",
-                WebkitBackdropFilter: "blur(10px)",
-                border: "1px solid rgba(255,255,255,0.12)",
-                transform: `translateX(${Math.round(10 * (1 - featuresOpacity))}px)`,
-                transition: "transform 420ms ease",
-                textAlign: "left",
-              }}
-            >
-              <div style={{ fontSize: 12, opacity: 0.65, marginBottom: 6 }}>{rightCard.tag}</div>
-              <div style={{ fontSize: 20, fontWeight: 650, marginBottom: 8 }}>{rightCard.title}</div>
-              <div style={{ fontSize: 15, opacity: 0.85, lineHeight: 1.5 }}>{rightCard.body}</div>
-            </div>
-          </div>
-        </div>
-
-        {/* Small loading chip */}
-        {!sceneReady[activeIdx] && (
-          <div
-            style={{
-              position: "absolute",
-              top: 18,
-              left: 18,
-              padding: "10px 12px",
-              borderRadius: 12,
-              background: "rgba(0,0,0,0.55)",
-              border: "1px solid rgba(255,255,255,0.12)",
-              fontSize: 14,
-              opacity: 0.9,
-              color: "white",
-            }}
-          >
-            Loading frames…
-          </div>
-        )}
+          ) : null;
+        })()}
       </div>
     </section>
   );

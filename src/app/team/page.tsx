@@ -165,13 +165,13 @@ export default function TeamPage() {
               <Card className="border-2 hover:border-primary/50 hover:shadow-xl transition-all group relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-full"></div>
                 <CardHeader className="relative z-10">
-                  <div className="relative mb-6 aspect-[3/4] w-full overflow-hidden rounded-2xl border-2 border-primary/20 group-hover:border-primary/50 transition-colors bg-gradient-to-br from-primary/5 to-background flex items-center justify-center">
-                    <div className="text-center space-y-2">
-                      <div className="w-24 h-24 rounded-full bg-primary/20 mx-auto flex items-center justify-center">
-                        <TrendingUp className="h-12 w-12 text-primary/40" />
-                      </div>
-                      <p className="text-xs text-muted-foreground">Photo Coming Soon</p>
-                    </div>
+                  <div className="relative mb-6 aspect-[3/4] w-full overflow-hidden rounded-2xl border-2 border-primary/20 group-hover:border-primary/50 transition-colors bg-gradient-to-br from-primary/5 to-background">
+                    <Image
+                      src="/team/krisha.jpeg"
+                      alt="Krisha - Business Strategy Lead"
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
                   </div>
                   <div className="space-y-2">
                     <div className="flex items-center gap-2">
@@ -249,13 +249,13 @@ export default function TeamPage() {
               <Card className="border-2 hover:border-primary/50 hover:shadow-xl transition-all group relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-full"></div>
                 <CardHeader className="relative z-10">
-                  <div className="relative mb-6 aspect-[3/4] w-full overflow-hidden rounded-2xl border-2 border-primary/20 group-hover:border-primary/50 transition-colors bg-gradient-to-br from-primary/5 to-background flex items-center justify-center">
-                    <div className="text-center space-y-2">
-                      <div className="w-24 h-24 rounded-full bg-primary/20 mx-auto flex items-center justify-center">
-                        <Lightbulb className="h-12 w-12 text-primary/40" />
-                      </div>
-                      <p className="text-xs text-muted-foreground">Photo Coming Soon</p>
-                    </div>
+                  <div className="relative mb-6 aspect-[3/4] w-full overflow-hidden rounded-2xl border-2 border-primary/20 group-hover:border-primary/50 transition-colors bg-gradient-to-br from-primary/5 to-background">
+                    <Image
+                      src="/team/elizabeth.jpeg"
+                      alt="Elizabeth - Research & Sensing Integration"
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
                   </div>
                   <div className="space-y-2">
                     <div className="flex items-center gap-2">

@@ -128,10 +128,10 @@ export default function ContactPage() {
                   </CardHeader>
                   <CardContent>
                     <a 
-                      href="tel:+1234567890" 
+                      href="tel:+6594507315" 
                       className="text-primary hover:underline font-medium"
                     >
-                      +65 9123 4507
+                      +65 9450 7315
                     </a>
                   </CardContent>
                 </Card>
