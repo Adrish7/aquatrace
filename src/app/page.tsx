@@ -71,8 +71,8 @@ export default function Home() {
                 <div className="text-sm text-muted-foreground">Market Size</div>
               </div>
               <div>
-                <div className="text-2xl font-bold">90%+</div>
-                <div className="text-sm text-muted-foreground">Detection Accuracy</div>
+                <div className="text-2xl font-bold">100%</div>
+                <div className="text-sm text-muted-foreground">Pipeline Coverage</div>
               </div>
               <div>
                 <div className="text-2xl font-bold">70-90%</div>
@@ -263,7 +263,7 @@ export default function Home() {
                     <CardContent>
                       <p className="text-muted-foreground mb-3">
                         Continuous scanning with <strong>EMAT sensors</strong> as the robot moves through pipelines. 
-                        90%+ detection accuracy using real-time signal processing.
+                        100% pipeline coverage using real-time signal processing.
                       </p>
                       <div className="flex items-center gap-2 text-sm text-primary font-medium">
                         <CheckCircle2 className="h-4 w-4" />
@@ -371,7 +371,7 @@ export default function Home() {
               
               <TabsContent value="exploded" className="mt-8">
                 <div className="relative aspect-video w-full overflow-hidden rounded-2xl border-2 border-primary/20 shadow-xl bg-gradient-to-br from-primary/5 to-background">
-                  <Image
+            <Image
                     src="/renders/rovertracer_exploded.png"
                     alt="RoverTracer exploded view"
                     fill
@@ -502,9 +502,6 @@ export default function Home() {
               </Button>
               <Button asChild variant="outline" size="lg" className="text-lg px-8">
                 <Link href="/business">View Business Model</Link>
-              </Button>
-              <Button asChild variant="outline" size="lg" className="text-lg px-8">
-                <Link href="/contact">Contact Us</Link>
               </Button>
             </CardContent>
           </Card>

@@ -85,7 +85,7 @@ export default function TechnologyPage() {
                   
                   <div className="flex items-start gap-3 pt-2">
                     <CheckCircle2 className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                    <p className="text-sm"><strong>90%+ detection accuracy</strong> with minimal false positives</p>
+                    <p className="text-sm"><strong>100% pipeline coverage</strong> with minimal false positives</p>
                   </div>
                 </div>
               </div>

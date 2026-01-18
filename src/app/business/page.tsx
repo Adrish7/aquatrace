@@ -312,7 +312,7 @@ export default function BusinessPage() {
                       </li>
                       <li className="flex items-start gap-2">
                         <CheckCircle2 className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                        <span><strong>90%+ detection accuracy</strong> with EMAT technology</span>
+                        <span><strong>100% pipeline coverage</strong> with EMAT technology</span>
                       </li>
                       <li className="flex items-start gap-2">
                         <CheckCircle2 className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
