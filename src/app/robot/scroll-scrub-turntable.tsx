@@ -13,14 +13,21 @@ type Scene = {
 
 type OverlayBox = {
   id: string;
-  x: number; // 0..1 (viewport normalized)
-  y: number; // 0..1
-  w?: number; // 0..1 of viewport width (recommended 0.22..0.35)
-  align?: "left" | "center" | "right"; // default "left"
+  x: number;
+  y: number;
+  w?: number;
+  align?: "left" | "center" | "right";
   tag?: string;
   title: string;
   body?: string;
+
+  // ✅ NEW
+  images?: Array<{
+    src: string;      // e.g. "/figures/fig4_noise_vs_defect.png"
+    alt?: string;
+  }>;
 };
+
 
 type OverlayPoint = {
   id: string;
@@ -37,14 +44,18 @@ type OverlayLink = {
 
 export type Overlay = {
   id: string;
-  sceneKey: string; // match Scene.key
-  start: number; // local progress 0..1 inside that scene
-  end: number; // local progress 0..1 inside that scene
-  fade?: number; // fade band in local progress (default 0.03)
+  sceneKey: string;
+  start: number;
+  end: number;
+  fade?: number;
   boxes: OverlayBox[];
   points?: OverlayPoint[];
   links?: OverlayLink[];
+
+  // ✅ NEW: keep showing after end (within the same scene)
+  sticky?: "end";
 };
+
 
 type Props = {
   scenes: Scene[];
@@ -334,8 +345,11 @@ export default function ScrollScrubShowcase({
   const activeSceneKey = scenes[activeIdx]?.key;
 
   // Fade UI near scene crossfade end
-  const uiFadeOut = smoothstep(1 - transitionBand, 1, activeLocal);
+  // Fade UI near scene crossfade end (but NOT on last scene)
+  const isLastScene = activeIdx === scenes.length - 1;
+  const uiFadeOut = isLastScene ? 0 : smoothstep(1 - transitionBand, 1, activeLocal);
   const uiOpacity = 1 - uiFadeOut;
+
 
   // ONE start textbox only (global)
   const startBoxOpacity = 1 - smoothstep(0.02, 0.06, globalP);
@@ -348,16 +362,32 @@ export default function ScrollScrubShowcase({
     return clamp01(aIn * aOut);
   };
 
+  const overlayAlphaStickyEnd = (start: number, fade: number, p: number) => {
+    const f = Math.max(0.0001, fade);
+    // fades in like normal, then stays at 1
+    return clamp01(smoothstep(start, start + f, p));
+  };
+  
+
   // Active overlays for current scene
   const activeOverlays = useMemo(() => {
+    const isLastScene = activeIdx === scenes.length - 1;
+
     return overlays
       .filter((o) => o.sceneKey === activeSceneKey)
       .map((o) => {
-        const a = overlayAlpha(o.start, o.end, o.fade ?? 0.03, activeLocal);
+        const fade = o.fade ?? 0.03;
+
+        const a =
+          isLastScene && o.sticky === "end"
+            ? overlayAlphaStickyEnd(o.start, fade, activeLocal)
+            : overlayAlpha(o.start, o.end, fade, activeLocal);
+
         return { overlay: o, alpha: a };
       })
       .filter((x) => x.alpha > 0.001);
-  }, [overlays, activeSceneKey, activeLocal]);
+  }, [overlays, activeSceneKey, activeLocal, activeIdx, scenes.length]);
+
 
   // Convert gapPx to svg units (viewBox 1000x1000) based on min viewport dimension
   const gapPxToSvg = (gapPx: number) => {
@@ -546,8 +576,9 @@ export default function ScrollScrubShowcase({
                 {overlay.boxes.map((b) => {
                   const align = b.align ?? "left";
                   const widthCss =
-                    b.w != null ? `min(${Math.round(b.w * 100)}vw, 520px)` : "min(360px, calc(100vw - 48px))";
-
+                    b.w != null
+                      ? `calc(${(b.w * 100).toFixed(2)}%)`
+                      : "min(360px, calc(100% - 48px))";
                   // anchor box at (x,y) using transform
                   // align affects the anchor point
                   const tx =
@@ -578,11 +609,66 @@ export default function ScrollScrubShowcase({
                       <div style={{ fontSize: 20, fontWeight: 650, marginBottom: b.body ? 8 : 0 }}>
                         {b.title}
                       </div>
-                      {b.body && (
-                        <div style={{ fontSize: 15, opacity: 0.85, lineHeight: 1.5 }}>
-                          {b.body}
+                      {(b.body || (b.images && b.images.length)) && (
+                        <div
+                          style={{
+                            display: "flex",
+                            gap: 14,
+                            alignItems: "flex-start",
+                          }}
+                        >
+                          {/* LEFT: text */}
+                          {b.body && (
+                            <div style={{ flex: 1, minWidth: 0 }}>
+                              <div
+                                style={{
+                                  fontSize: 15,
+                                  opacity: 0.85,
+                                  lineHeight: 1.5,
+                                  whiteSpace: "pre-line",
+                                }}
+                                dangerouslySetInnerHTML={{
+                                  __html: b.body
+                                    .trim()
+                                    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>"),
+                                }}
+                              />
+                            </div>
+                          )}
+
+                          {/* RIGHT: images stacked */}
+                          {b.images && b.images.length > 0 && (
+                            <div
+                              style={{
+                                width: 460,          // tweak
+                                maxWidth: "42%",     // tweak
+                                display: "flex",
+                                flexDirection: "column",
+                                gap: 10,
+                                flexShrink: 0,
+                              }}
+                            >
+                              {b.images.map((im, idx) => (
+                                <img
+                                  key={`${b.id}-img-${idx}`}
+                                  src={im.src}
+                                  alt={im.alt ?? ""}
+                                  style={{
+                                    width: "100%",
+                                    height: "auto",
+                                    borderRadius: 10,
+                                    border: "1px solid rgba(255,255,255,0.12)",
+                                    background: "rgba(255,255,255,0.03)",
+                                  }}
+                                />
+                              ))}
+                            </div>
+                          )}
                         </div>
                       )}
+
+
+
                     </div>
                   );
                 })}
