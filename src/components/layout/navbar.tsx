@@ -25,7 +25,7 @@ export function Navbar() {
         <div className="w-full mx-2 sm:mx-4 md:mx-8 flex h-14 sm:h-16 items-center justify-between px-2 sm:px-4 md:px-6 lg:px-8">
           {/* Left - AquaTrace */}
           <Link href="/" className="flex items-center space-x-2 h-7 sm:h-8">
-            <span className="text-lg sm:text-xl font-bold text-primary leading-none">AquaTrace</span>
+            <span className="text-lg sm:text-xl md:text-2xl font-semibold text-primary leading-none tracking-tight" style={{ fontFamily: 'var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>AquaTrace</span>
           </Link>
           
           {/* Center - Middle navigation items */}
