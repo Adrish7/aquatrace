@@ -20,56 +20,76 @@ export function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container mx-auto flex h-16 max-w-7xl items-center justify-between px-6 lg:px-8">
-        <Link href="/" className="flex items-center space-x-2">
-          <span className="text-xl font-bold text-primary">AquaTrace</span>
-        </Link>
-        {/* Desktop Navigation */}
-        <div className="hidden items-center gap-6 md:flex">
-          {navItems.map((item) => (
+    <nav className="relative z-50 w-full mt-6 md:mt-8">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6 lg:px-8 py-4">
+        <div className="w-full mx-4 md:mx-8 flex h-16 items-center justify-between px-6 lg:px-8">
+          {/* Left - AquaTrace */}
+          <Link href="/" className="flex items-center space-x-2 h-8">
+            <span className="text-xl font-bold text-primary leading-none">AquaTrace</span>
+          </Link>
+          
+          {/* Center - Middle navigation items */}
+          <div className="hidden items-center gap-6 md:flex absolute left-1/2 -translate-x-1/2">
+            {navItems.filter(item => item.href !== "/" && item.href !== "/team").map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={cn(
+                  "text-sm font-medium transition-colors hover:text-primary",
+                  pathname === item.href
+                    ? "text-foreground"
+                    : "text-muted-foreground"
+                )}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
+          
+          {/* Right - Team */}
+          <div className="hidden items-center md:flex">
             <Link
-              key={item.href}
-              href={item.href}
+              href="/team"
               className={cn(
                 "text-sm font-medium transition-colors hover:text-primary",
-                pathname === item.href
+                pathname === "/team"
                   ? "text-foreground"
                   : "text-muted-foreground"
               )}
             >
-              {item.label}
+              Team
             </Link>
-          ))}
+          </div>
+          
+          {/* Mobile Navigation */}
+          <Sheet open={open} onOpenChange={setOpen}>
+            <SheetTrigger asChild className="md:hidden">
+              <Button variant="ghost" size="icon">
+                <Menu className="h-6 w-6" />
+                <span className="sr-only">Toggle menu</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+              <nav className="flex flex-col gap-4">
+                {navItems.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setOpen(false)}
+                    className={cn(
+                      "text-lg font-medium transition-colors hover:text-primary",
+                      pathname === item.href
+                        ? "text-foreground"
+                        : "text-muted-foreground"
+                    )}
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </nav>
+            </SheetContent>
+          </Sheet>
         </div>
-        {/* Mobile Navigation */}
-        <Sheet open={open} onOpenChange={setOpen}>
-          <SheetTrigger asChild className="md:hidden">
-            <Button variant="ghost" size="icon">
-              <Menu className="h-6 w-6" />
-              <span className="sr-only">Toggle menu</span>
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="right" className="w-[300px] sm:w-[400px]">
-            <nav className="flex flex-col gap-4">
-              {navItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setOpen(false)}
-                  className={cn(
-                    "text-lg font-medium transition-colors hover:text-primary",
-                    pathname === item.href
-                      ? "text-foreground"
-                      : "text-muted-foreground"
-                  )}
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </nav>
-          </SheetContent>
-        </Sheet>
       </div>
     </nav>
   );
