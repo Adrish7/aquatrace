@@ -12,8 +12,10 @@ const navItems = [
   { href: "/", label: "Home" },
   { href: "/technology", label: "Technology" },
   { href: "/business", label: "Competition & Pricing" },
-  { href: "/team", label: "Team" },
+  { href: "/team", label: "Team" },       // ✅ now part of center cluster
+  { href: "/contact", label: "Contact" }, // ✅ new page
 ];
+
 
 export function Navbar() {
   const pathname = usePathname();
@@ -30,7 +32,7 @@ export function Navbar() {
           
           {/* Center - Middle navigation items */}
           <div className="hidden items-center gap-6 md:flex absolute left-1/2 -translate-x-1/2">
-            {navItems.filter(item => item.href !== "/" && item.href !== "/team").map((item) => (
+          {navItems.filter(item => item.href !== "/" && item.href !== "/contact").map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
@@ -46,20 +48,21 @@ export function Navbar() {
             ))}
           </div>
           
-          {/* Right - Team */}
+          {/* Right - Contact */}
           <div className="hidden items-center md:flex">
             <Link
-              href="/team"
+              href="/contact"
               className={cn(
                 "text-sm font-medium transition-colors hover:text-primary",
-                pathname === "/team"
+                pathname === "/contact"
                   ? "text-foreground"
                   : "text-muted-foreground"
               )}
             >
-              Team
+              Contact
             </Link>
           </div>
+
           
           {/* Mobile Navigation */}
           <Sheet open={open} onOpenChange={setOpen}>
