@@ -1,5 +1,4 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import { CheckCircle2, X, Target, Package, DollarSign } from "lucide-react";
 
 export default function BusinessPage() {
@@ -16,8 +15,6 @@ export default function BusinessPage() {
           </p>
         </div>
       </section>
-
-      <Separator className="opacity-30" />
 
       {/* Competition Comparison */}
       <section className="mx-auto w-full max-w-7xl px-6 py-20 lg:px-8">
@@ -143,10 +140,8 @@ export default function BusinessPage() {
         </div>
       </section>
 
-      <Separator className="opacity-30" />
-
       {/* Pricing Section */}
-      <section className="bg-muted/20 py-20">
+      <section className="py-20">
         <div className="mx-auto w-full max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-5xl space-y-12">
             <div className="text-center">

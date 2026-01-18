@@ -17,23 +17,27 @@ export default function Home() {
   return (
     <div className="flex flex-col">
       {/* Hero Section - Robot Centered */}
-      <section className="relative mx-auto w-full max-w-7xl px-6 pt-4 pb-8 md:pt-12 md:pb-12 lg:px-8 min-h-[90vh] flex items-center justify-center">
-        <div className="relative w-full grid lg:grid-cols-2 gap-12 items-center">
+      <section className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 pt-4 pb-8 md:pt-12 md:pb-12 lg:px-8 min-h-[80vh] sm:min-h-[90vh] flex items-center justify-center">
+        <div className="relative w-full grid lg:grid-cols-2 gap-8 sm:gap-12 items-center">
           {/* Left side - Text content */}
-          <div className="space-y-8 z-10 pl-[2.5rem] md:pl-[4rem]">
-            <h1 className="text-4xl font-semibold leading-tight sm:text-5xl md:text-6xl lg:text-7xl">
+          <div className="space-y-6 sm:space-y-8 z-10 text-center lg:text-left px-2 sm:px-0 sm:pl-[2.5rem] md:pl-[4rem]">
+            <h1 className="text-3xl sm:text-4xl font-semibold leading-tight sm:text-5xl md:text-6xl lg:text-7xl">
               Protect water pipelines from within.
             </h1>
 
-            <p className="text-base text-muted-foreground max-w-xl leading-relaxed">
+            <p className="text-sm sm:text-base text-muted-foreground max-w-xl mx-auto lg:mx-0 leading-relaxed">
               AquaTrace's{" "}
               <span className="font-medium text-primary">RoverTracer</span> is
               the first autonomous robot that detects, treats, and seals cracks
               from within live water pipelines.
             </p>
 
-            <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
-              <Button asChild size="lg" className="text-base px-7">
+            <div className="flex flex-col gap-3 sm:flex-row sm:gap-4 justify-center lg:justify-start">
+              <Button
+                asChild
+                size="lg"
+                className="text-sm sm:text-base px-6 sm:px-7 w-full sm:w-auto"
+              >
                 <Link href="/technology">
                   Explore Technology
                   <ArrowRight className="ml-2 h-4 w-4" />
@@ -43,10 +47,10 @@ export default function Home() {
           </div>
 
           {/* Right side - 3D Model with glow behind it */}
-          <div className="relative w-full aspect-[4/3] flex items-center justify-center">
+          <div className="relative w-full aspect-[4/3] flex items-center justify-center mt-8 lg:mt-0">
             {/* Background gradient accent - positioned behind the model */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <div className="w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl"></div>
+              <div className="w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] md:w-[600px] md:h-[600px] bg-primary/5 rounded-full blur-3xl"></div>
             </div>
             <div className="relative z-10 w-full h-full flex items-center justify-center">
               <ModelViewer
@@ -60,9 +64,9 @@ export default function Home() {
       </section>
 
       {/* Key Stats - Minimal */}
-      <section className="py-12 relative">
-        <div className="mx-auto w-full max-w-7xl px-6 lg:px-8">
-          <div className="grid gap-6 md:grid-cols-4 px-4 md:px-8 border-t border-b border-primary/20 py-8">
+      <section className="py-8 sm:py-12 relative">
+        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 px-2 sm:px-4 md:px-8 border-t border-b border-primary/20 py-6 sm:py-8">
             <div className="text-center">
               <div className="text-3xl font-semibold mb-1 text-primary">
                 126T
@@ -100,13 +104,15 @@ export default function Home() {
       </section>
 
       {/* Solution - Minimal */}
-      <section className="mx-auto w-full max-w-7xl px-6 py-20 lg:px-8">
-        <div className="mx-auto max-w-4xl space-y-8 px-4 md:px-8">
+      <section className="mx-auto w-full max-w-7xl px-4 sm:px-6 py-12 sm:py-20 lg:px-8">
+        <div className="mx-auto max-w-4xl space-y-6 sm:space-y-8 px-2 sm:px-4 md:px-8">
           <div className="text-center">
-            <h2 className="text-3xl font-semibold mb-4">How It Works</h2>
+            <h2 className="text-2xl sm:text-3xl font-semibold mb-4">
+              How It Works
+            </h2>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-3">
+          <div className="grid gap-4 sm:gap-6 md:grid-cols-3">
             <Card className="border flex flex-col">
               <CardHeader className="pb-3">
                 <div className="flex items-center gap-3">
@@ -162,17 +168,17 @@ export default function Home() {
       </section>
 
       {/* RoverTracer in Action */}
-      <section className="py-20">
-        <div className="mx-auto w-full max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-5xl space-y-8 px-4 md:px-8">
+      <section className="py-12 sm:py-20">
+        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-5xl space-y-6 sm:space-y-8 px-2 sm:px-4 md:px-8">
             <div className="text-center">
-              <h2 className="text-3xl font-semibold mb-3">
+              <h2 className="text-2xl sm:text-3xl font-semibold mb-3">
                 RoverTracer in Action
               </h2>
             </div>
 
             <div className="relative aspect-video w-full overflow-hidden rounded-lg border bg-background">
-              <div className="relative w-full h-full min-h-[400px]">
+              <div className="relative w-full h-full min-h-[200px] sm:min-h-[300px] md:min-h-[400px]">
                 <LoopingAnimation
                   src="/videos/FullSimulation.mp4"
                   className="absolute inset-0 w-full h-full"

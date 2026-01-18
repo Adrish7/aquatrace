@@ -91,57 +91,60 @@ export default function TeamPage() {
               </CardContent>
             </Card>
 
-            {/* Arty */}
-            <Card className="border flex flex-col md:col-start-2">
-              <CardHeader className="pb-3">
-                <div className="relative mb-4 aspect-[3/4] w-full overflow-hidden rounded-lg border bg-background">
-                  <Image
-                    src="/team/arty.jpeg"
-                    alt="Arty - Research & Sensing Integration"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <Microscope className="h-4 w-4 text-primary" />
+            {/* Arty & Elizabeth - Centered */}
+            <div className="md:col-span-3 flex justify-center gap-6">
+              {/* Arty */}
+              <Card className="border flex flex-col w-full md:w-auto md:max-w-[calc((100%-2*1.5rem)/3)]">
+                <CardHeader className="pb-3">
+                  <div className="relative mb-4 aspect-[3/4] w-full overflow-hidden rounded-lg border bg-background">
+                    <Image
+                      src="/team/arty.jpeg"
+                      alt="Arty - Research & Sensing Integration"
+                      fill
+                      className="object-cover"
+                    />
                   </div>
-                  <CardTitle className="text-lg">Arty</CardTitle>
-                </div>
-                <CardDescription>Research & Sensing Integration</CardDescription>
-              </CardHeader>
-              <CardContent className="pt-0">
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  Conducts research on guided-wave inspection and integrates EMAT technology.
-                </p>
-              </CardContent>
-            </Card>
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 rounded bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <Microscope className="h-4 w-4 text-primary" />
+                    </div>
+                    <CardTitle className="text-lg">Arty</CardTitle>
+                  </div>
+                  <CardDescription>Research & Sensing Integration</CardDescription>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    Conducts research on guided-wave inspection and integrates EMAT technology.
+                  </p>
+                </CardContent>
+              </Card>
 
-            {/* Elizabeth */}
-            <Card className="border flex flex-col">
-              <CardHeader className="pb-3">
-                <div className="relative mb-4 aspect-[3/4] w-full overflow-hidden rounded-lg border bg-background">
-                  <Image
-                    src="/team/elizabeth.jpeg"
-                    alt="Elizabeth - Research & Sensing Integration"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <Microscope className="h-4 w-4 text-primary" />
+              {/* Elizabeth */}
+              <Card className="border flex flex-col w-full md:w-auto md:max-w-[calc((100%-2*1.5rem)/3)]">
+                <CardHeader className="pb-3">
+                  <div className="relative mb-4 aspect-[3/4] w-full overflow-hidden rounded-lg border bg-background">
+                    <Image
+                      src="/team/elizabeth.jpeg"
+                      alt="Elizabeth - Research & Sensing Integration"
+                      fill
+                      className="object-cover"
+                    />
                   </div>
-                  <CardTitle className="text-lg">Elizabeth</CardTitle>
-                </div>
-                <CardDescription>Research & Sensing Integration</CardDescription>
-              </CardHeader>
-              <CardContent className="pt-0">
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  Conducts research on guided-wave inspection and validates sensing approaches.
-                </p>
-              </CardContent>
-            </Card>
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 rounded bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <Microscope className="h-4 w-4 text-primary" />
+                    </div>
+                    <CardTitle className="text-lg">Elizabeth</CardTitle>
+                  </div>
+                  <CardDescription>Research & Sensing Integration</CardDescription>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    Conducts research on guided-wave inspection and validates sensing approaches.
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </div>
       </section>
