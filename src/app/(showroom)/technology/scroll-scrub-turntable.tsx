@@ -487,13 +487,13 @@ export default function ScrollScrubShowcase({
             }}
           >
             <div style={{ fontSize: 14, opacity: 0.7, marginBottom: 6 }}>
-              Scroll to explore • (Alt+Click to copy coords)
+              Scroll to explore
             </div>
             <div style={{ fontSize: 22, fontWeight: 650, marginBottom: 8 }}>
-              RoverTracer in-pipe crack repair
+              RoverTracer, Step by Step
             </div>
             <div style={{ fontSize: 16, opacity: 0.85, lineHeight: 1.5 }}>
-              We’ll now place callouts per segment using an overlay timeline.
+              Scroll to move through an interactive breakdown of RoverTracer. Each section highlights a key component and explains its role in the system.
             </div>
           </div>
 
